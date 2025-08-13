@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameScore Pro - Contador de Puntos</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <meta name="description" content="Aplicación profesional para llevar el conteo de puntos en juegos">
+</head>
+<body>
+    <div class="app">
+        <header class="app-header">
+            <div class="container">
+                <h1><i class="fas fa-trophy"></i> GameScore Pro</h1>
+                <p class="tagline">Sistema profesional de conteo de puntos</p>
+            </div>
+        </header>
+        
+        <main class="main-content">
+            <div class="container">
+        
+            <div id="gamesSection" class="games-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-gamepad"></i> Mis Juegos</h2>
+                    <div class="stats" id="gamesStats">
+                        <span class="stat-item">
+                            <i class="fas fa-list"></i>
+                            <span id="totalGames">0</span> juegos
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-plus-circle"></i> Crear Nuevo Juego</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="game-form">
+                            <div class="input-group">
+                                <i class="fas fa-edit input-icon"></i>
+                                <input type="text" id="gameNameInput" placeholder="Ingresa el nombre del juego..." class="form-input">
+                            </div>
+                            <button onclick="createGame()" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Crear Juego
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="gamesList" class="games-list"></div>
+                
+                <div id="loadingGames" class="loading" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i> Cargando juegos...
+                </div>
+            </div>
+        
+            <div id="gameDetail" class="game-detail" style="display: none;">
+                <div class="game-header">
+                    <div class="breadcrumb">
+                        <button onclick="goBack()" class="btn-back">
+                            <i class="fas fa-arrow-left"></i> Volver
+                        </button>
+                        <div class="game-title">
+                            <h2 id="currentGameName"></h2>
+                            <div class="game-meta" id="gameMeta">
+                                <span class="meta-item">
+                                    <i class="fas fa-users"></i>
+                                    <span id="totalPlayers">0</span> jugadores
+                                </span>
+                                <span class="meta-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span id="gameTime">Iniciado hoy</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-user-plus"></i> Agregar Jugador</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="player-form">
+                            <div class="input-group">
+                                <i class="fas fa-user input-icon"></i>
+                                <input type="text" id="playerNameInput" placeholder="Nombre del jugador..." class="form-input">
+                            </div>
+                            <button onclick="addPlayer()" class="btn btn-success">
+                                <i class="fas fa-plus"></i> Agregar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="players-container">
+                    <div id="playersList" class="players-list"></div>
+                    
+                    <div id="loadingPlayers" class="loading" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i> Actualizando jugadores...
+                    </div>
+                </div>
+            </div>
+            
+            </div>
+        </main>
+        
+        <div id="toast" class="toast" style="display: none;">
+            <div class="toast-content">
+                <i class="toast-icon"></i>
+                <span class="toast-message"></span>
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
