@@ -1,14 +1,15 @@
-import dbConnect from '../../../lib/db.js';
-import Game from '../../../lib/Game.js';
+// IMPORT CORRECTO: 4 niveles arriba hasta lib/
+import dbConnect from '../../../../../lib/db.js';
+import Game from '../../../../../lib/Game.js';
 
 export default async function handler(req, res) {
-  await dbConnect();
-  let { id, playerId } = req.query;
-if (Array.isArray(id)) id = id[0];
-if (Array.isArray(playerId)) playerId = playerId[0];
+  try {
+    await dbConnect();
+    let { id, playerId } = req.query;
+    if (Array.isArray(id)) id = id[0];
+    if (Array.isArray(playerId)) playerId = playerId[0];
 
-  if (req.method === 'PUT') {
-    try {
+    if (req.method === 'PUT') {
       const { points } = req.body;
       if (!id || typeof id !== 'string' || id.length < 8) {
         return res.status(400).json({ error: 'Invalid game id' });
@@ -31,12 +32,17 @@ if (Array.isArray(playerId)) playerId = playerId[0];
       }
       player.points = points;
       const updatedGame = await game.save();
-      res.status(200).json(updatedGame);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
+      return res.status(200).json(updatedGame);
     }
-  } else {
+
     res.setHeader('Allow', ['PUT']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+    return res.status(405).json({ error: `Method ${req.method} Not Allowed` });
+  } catch (error) {
+    console.error('API ERROR /points:', error);
+    if (error.name === 'CastError') {
+      return res.status(400).json({ error: 'Invalid id format' });
+    }
+    res.status(500).json({ error: error.message || 'Internal Server Error' });
   }
 }
+

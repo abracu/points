@@ -1,11 +1,12 @@
-import dbConnect from '../../../../lib/db.js';
-import Game from '../../../../lib/Game.js';
+import dbConnect from '../../../../../lib/db.js';
+import Game from '../../../../../lib/Game.js';
 
 export default async function handler(req, res) {
+  console.log('Handler DELETE jugador', req.method, req.query);
   await dbConnect();
   let { id, playerId } = req.query;
-if (Array.isArray(id)) id = id[0];
-if (Array.isArray(playerId)) playerId = playerId[0];
+  if (Array.isArray(id)) id = id[0];
+  if (Array.isArray(playerId)) playerId = playerId[0];
 
   if (req.method === 'DELETE') {
     try {
@@ -24,7 +25,11 @@ if (Array.isArray(playerId)) playerId = playerId[0];
       if (!game) {
         return res.status(404).json({ error: 'Game not found' });
       }
-      game.players.id(playerId).remove();
+      const playerIndex = game.players.findIndex(p => p._id.toString() === playerId);
+      if (playerIndex === -1) {
+        return res.status(404).json({ error: 'Player not found in game' });
+      }
+      game.players.splice(playerIndex, 1);
       const updatedGame = await game.save();
       res.status(200).json(updatedGame);
     } catch (error) {
