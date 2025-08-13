@@ -3,11 +3,21 @@ import Game from '../../../lib/Game';
 
 export default async function handler(req, res) {
   await dbConnect();
-  const { id } = req.query;
+  let { id } = req.query;
+if (Array.isArray(id)) id = id[0];
+
 
   if (req.method === 'GET') {
     try {
-      const game = await Game.findById(id);
+      if (!id || typeof id !== 'string' || id.length < 8) {
+        return res.status(400).json({ error: 'Invalid game id' });
+      }
+      let game;
+      try {
+        game = await Game.findById(id);
+      } catch (err) {
+        return res.status(400).json({ error: 'Invalid game id format' });
+      }
       if (!game) {
         return res.status(404).json({ error: 'Game not found' });
       }
@@ -17,7 +27,15 @@ export default async function handler(req, res) {
     }
   } else if (req.method === 'DELETE') {
     try {
-      const game = await Game.findByIdAndDelete(id);
+      if (!id || typeof id !== 'string' || id.length < 8) {
+        return res.status(400).json({ error: 'Invalid game id' });
+      }
+      let game;
+      try {
+        game = await Game.findByIdAndDelete(id);
+      } catch (err) {
+        return res.status(400).json({ error: 'Invalid game id format' });
+      }
       if (!game) {
         return res.status(404).json({ error: 'Game not found' });
       }
