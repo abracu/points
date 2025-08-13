@@ -1,13 +1,26 @@
-import dbConnect from '../../../../../lib/db';
-import Game from '../../../../../lib/Game';
+import dbConnect from '../../../lib/db.js';
+import Game from '../../../lib/Game.js';
 
 export default async function handler(req, res) {
   await dbConnect();
-  const { id, playerId } = req.query;
+  let { id, playerId } = req.query;
+if (Array.isArray(id)) id = id[0];
+if (Array.isArray(playerId)) playerId = playerId[0];
 
   if (req.method === 'DELETE') {
     try {
-      const game = await Game.findById(id);
+      if (!id || typeof id !== 'string' || id.length < 8) {
+        return res.status(400).json({ error: 'Invalid game id' });
+      }
+      if (!playerId || typeof playerId !== 'string' || playerId.length < 8) {
+        return res.status(400).json({ error: 'Invalid player id' });
+      }
+      let game;
+      try {
+        game = await Game.findById(id);
+      } catch (err) {
+        return res.status(400).json({ error: 'Invalid game id format' });
+      }
       if (!game) {
         return res.status(404).json({ error: 'Game not found' });
       }
