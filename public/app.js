@@ -1,3 +1,5 @@
+// Cambia esta URL por la de tu backend desplegado (por ejemplo, Railway, Render, Heroku)
+const API_BASE = 'https://mi-backend-production.up.railway.app';
 let currentGameId = null;
 
 // Utility functions for professional UX
@@ -59,7 +61,7 @@ async function loadGames() {
     showLoading('loadingGames');
     
     try {
-        const response = await fetch('/api/games');
+        const response = await fetch(`${API_BASE}/api/games`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -145,7 +147,7 @@ async function createGame() {
     button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creando...';
     
     try {
-        const response = await fetch('/api/games', {
+        const response = await fetch(`${API_BASE}/api/games`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -177,7 +179,7 @@ async function deleteGame(gameId) {
     }
     
     try {
-        const response = await fetch(`/api/games/${gameId}`, {
+        const response = await fetch(`${API_BASE}/api/games/${gameId}`, {
             method: 'DELETE'
         });
         
@@ -199,7 +201,7 @@ async function openGame(gameId) {
     showLoading('loadingPlayers');
     
     try {
-        const response = await fetch(`/api/games/${gameId}`);
+        const response = await fetch(`${API_BASE}/api/games/${gameId}`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -298,7 +300,7 @@ async function addPlayer() {
     button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Agregando...';
     
     try {
-        const response = await fetch(`/api/games/${currentGameId}/players`, {
+        const response = await fetch(`${API_BASE}/api/games/${currentGameId}/players`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -329,7 +331,7 @@ async function changePoints(playerId, newPoints) {
     showLoading('loadingPlayers');
     
     try {
-        const response = await fetch(`/api/games/${currentGameId}/players/${playerId}/points`, {
+        const response = await fetch(`${API_BASE}/api/games/${currentGameId}/players/${playerId}/points`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -364,7 +366,7 @@ async function deletePlayer(playerId) {
     showLoading('loadingPlayers');
     
     try {
-        const response = await fetch(`/api/games/${currentGameId}/players/${playerId}`, {
+        const response = await fetch(`${API_BASE}/api/games/${currentGameId}/players/${playerId}`, {
             method: 'DELETE'
         });
         
@@ -427,7 +429,7 @@ async function loadGamesInitial() {
     showLoading('loadingGames');
     
     try {
-        const response = await fetch('/api/games');
+        const response = await fetch(`${API_BASE}/api/games`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
