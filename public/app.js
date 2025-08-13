@@ -1,5 +1,5 @@
 // Cambia esta URL por la de tu backend desplegado (por ejemplo, Railway, Render, Heroku)
-const API_BASE = 'https://mi-backend-production.up.railway.app';
+const API_BASE = '';
 let currentGameId = null;
 
 // Utility functions for professional UX
